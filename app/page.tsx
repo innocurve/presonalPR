@@ -140,7 +140,13 @@ const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
   e.preventDefault();
   const element = document.getElementById(id);
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
+    const headerOffset = 100; // 네비게이션 바 높이 + 여유 공간
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
   }
 };
 
@@ -166,10 +172,10 @@ return (
         <div className="flex items-center space-x-4">
           <nav className="hidden md:flex space-x-6">
             <Link href="#profile" onClick={(e) => handleScrollTo(e, 'profile')} className="text-gray-600 hover:text-blue-600 transition duration-300">{translate('profile', language)}</Link>
+            <Link href="#smart-options" onClick={(e) => handleScrollTo(e, 'smart-options')} className="text-gray-600 hover:text-blue-600 transition duration-300">{translate('smartOptions', language)}</Link>
             <Link href="#values" onClick={(e) => handleScrollTo(e, 'values')} className="text-gray-600 hover:text-blue-600 transition duration-300">{translate('values', language)}</Link>
             <Link href="#history" onClick={(e) => handleScrollTo(e, 'history')} className="text-gray-600 hover:text-blue-600 transition duration-300">{translate('history', language)}</Link>
             <Link href="#community" onClick={(e) => handleScrollTo(e, 'community')} className="text-gray-600 hover:text-blue-600 transition duration-300">{translate('activities', language)}</Link>
-            <Link href="#contact" onClick={(e) => handleScrollTo(e, 'contact')} className="text-gray-600 hover:text-blue-600 transition duration-300">{translate('contact', language)}</Link>
           </nav>
           <LanguageToggle />
           <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -189,10 +195,10 @@ return (
         >
           <div className="flex flex-col">
             <Link href="#profile" onClick={(e) => { setIsMenuOpen(false); handleScrollTo(e, 'profile'); }} className="block p-4 text-gray-600 hover:bg-gray-100 transition duration-300">{translate('profile', language)}</Link>
+            <Link href="#smart-options" onClick={(e) => { setIsMenuOpen(false); handleScrollTo(e, 'smart-options'); }} className="block p-4 text-gray-600 hover:bg-gray-100 transition duration-300">{translate('smartOptions', language)}</Link>
             <Link href="#values" onClick={(e) => { setIsMenuOpen(false); handleScrollTo(e, 'values'); }} className="block p-4 text-gray-600 hover:bg-gray-100 transition duration-300">{translate('values', language)}</Link>
             <Link href="#history" onClick={(e) => { setIsMenuOpen(false); handleScrollTo(e, 'history'); }} className="block p-4 text-gray-600 hover:bg-gray-100 transition duration-300">{translate('history', language)}</Link>
             <Link href="#community" onClick={(e) => { setIsMenuOpen(false); handleScrollTo(e, 'community'); }} className="block p-4 text-gray-600 hover:bg-gray-100 transition duration-300">{translate('activities', language)}</Link>
-            <Link href="#contact" onClick={(e) => { setIsMenuOpen(false); handleScrollTo(e, 'contact'); }} className="block p-4 text-gray-600 hover:bg-gray-100 transition duration-300">{translate('contact', language)}</Link>
           </div>
         </motion.nav>
       )}
@@ -234,10 +240,19 @@ return (
           </section>
         </FadeInSection>
       </div>
+
       <div className="w-full overflow-x-hidden">
         <FadeInSection>
-          <section id="values" className="mb-8">
-            <MyValues />
+          <section id="smart-options" className="mb-8">
+            <ContactOptions language={language} onOpenChatBot={() => setIsChatBotOpen(true)} />
+          </section>
+        </FadeInSection>
+      </div>
+
+      <div className="w-full overflow-x-hidden">
+        <FadeInSection>
+          <section id="values" className="mb-8 pt-8">
+            <MyValues language={language} />
           </section>
         </FadeInSection>
       </div>
@@ -299,16 +314,6 @@ return (
                 </Card>
               ))}
             </div>
-          </section>
-        </FadeInSection>
-      </div>
-      <div className="w-full overflow-x-hidden">
-        <FadeInSection>
-          <section className="my-8" id="contact">
-            <ContactOptions 
-              language={language} 
-              onOpenChatBot={() => setIsChatBotOpen(true)} 
-            />
           </section>
         </FadeInSection>
       </div>

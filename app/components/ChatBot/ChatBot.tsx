@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import ChatMessage from './ChatMessage';
-import ChatInput from './ChatInput';
+import ChatInput, { Message } from './ChatInput';
 import ReservationForm from './ReservationForm';
+import { translate, Language } from '@/app/utils/translations';
+import { useLanguage } from '@/app/hooks/useLanguage';
 
 interface ChatBotProps {
   isOpen?: boolean;
@@ -12,13 +14,10 @@ interface ChatBotProps {
 }
 
 const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
+  const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const [messages, setMessages] = useState<Array<{
-    role: 'user' | 'bot';
-    content: string;
-    timestamp?: number;
-  }>>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [showReservationForm, setShowReservationForm] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +75,24 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
   useEffect(() => {
     const savedMessages = localStorage.getItem('chatMessages');
     if (savedMessages) {
-      setMessages(JSON.parse(savedMessages));
+      const parsedMessages = JSON.parse(savedMessages);
+      if (parsedMessages.length > 0) {
+        setMessages(parsedMessages);
+      } else {
+        // 저장된 메시지가 없을 때만 초기 메시지 설정
+        setMessages([{
+          role: 'assistant',
+          content: '안녕하세요! 저는 정민기의 AI 클론입니다. 무엇을 도와드릴까요?',
+          timestamp: Date.now()
+        }]);
+      }
+    } else {
+      // localStorage에 아무것도 없을 때 초기 메시지 설정
+      setMessages([{
+        role: 'assistant',
+        content: '안녕하세요! 저는 정민기의 AI 클론입니다. 무엇을 도와드릴까요?',
+        timestamp: Date.now()
+      }]);
     }
   }, []);
 
@@ -88,12 +104,14 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
   }, [messages]);
 
   useEffect(() => {
-    if (messages.length > 0 && messages[messages.length - 1].role === 'bot') {
+    if (messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
       scrollToLatestResponse();
     }
   }, [messages]);
 
   const handleSendMessage = async (message: string) => {
+    if (!message.trim()) return;
+    
     const newUserMessage = {
       role: 'user' as const,
       content: message,
@@ -111,24 +129,34 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
         body: JSON.stringify({ message })
       });
 
+      if (!response.ok) {
+        throw new Error('API 응답이 실패했습니다.');
+      }
+
       const data = await response.json();
       
-      if (data.response) {
-        const newBotMessage = {
-          role: 'bot' as const,
-          content: data.response,
-          timestamp: Date.now()
-        };
-        setMessages(prev => [...prev, newBotMessage]);
-        setShowReservationForm(data.showReservationForm || false);
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      const newBotMessage = {
+        role: 'assistant' as const,
+        content: data.response,
+        timestamp: Date.now()
+      };
+      setMessages(prev => [...prev, newBotMessage]);
+      
+      if (data.showReservationForm) {
+        setShowReservationForm(true);
       }
     } catch (error) {
       console.error('Error:', error);
-      setMessages(prev => [...prev, { 
-        role: 'bot', 
-        content: '죄송합니다. 오류가 발생했습니다.',
+      const errorMessage = {
+        role: 'assistant' as const,
+        content: error instanceof Error ? error.message : '죄송합니다. 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
         timestamp: Date.now()
-      }]);
+      };
+      setMessages(prev => [...prev, errorMessage]);
     }
   };
 
@@ -167,7 +195,7 @@ ${formData.content}
 ✓ 예약하신 내용은 확인 후 연락드리겠습니다.`;
 
         setMessages(prev => [...prev, {
-          role: 'bot',
+          role: 'assistant',
           content: reservationMessage,
           timestamp: Date.now()
         }]);
@@ -180,7 +208,7 @@ ${formData.content}
     } catch (error) {
       console.error('Reservation Error:', error);
       setMessages(prev => [...prev, {
-        role: 'bot',
+        role: 'assistant',
         content: '죄송합니다. 예약 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
         timestamp: Date.now()
       }]);
@@ -270,7 +298,7 @@ ${formData.content}
           </div>
           
           <div className={`
-            flex-1 overflow-y-auto p-4
+            flex-1 overflow-y-auto p-4 space-y-4
             ${isDark ? 'bg-gray-800 text-white' : 'bg-white'}
           `}>
             {messages.length === 0 && (
@@ -281,13 +309,11 @@ ${formData.content}
                 안녕하세요! 무엇을 도와드릴까요?
               </div>
             )}
-            {messages.map((msg, index) => (
+            {messages.map((message, index) => (
               <ChatMessage 
                 key={index} 
-                role={msg.role} 
-                content={msg.content} 
-                timestamp={msg.timestamp}
-                isDark={isDark}
+                message={message}
+                isDarkMode={isDark}
               />
             ))}
             {showReservationForm && (
@@ -301,10 +327,13 @@ ${formData.content}
             <div ref={messagesEndRef} />
           </div>
           
-          <ChatInput 
-            onSendMessage={handleSendMessage}
-            isDark={isDark}
-          />
+          <div className="p-4 border-t">
+            <ChatInput 
+              onSendMessage={handleSendMessage}
+              isDarkMode={isDark}
+              placeholder={translate('chatInputPlaceholder', language)}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -21,6 +21,12 @@ export const translations: TranslationDictionary = {
     ja: '価値観',
     zh: '价值观',
   },
+  valuesDescription: {
+    ko: '우리는\n격동과 변혁의 시대\n한가운데에 서 있습니다.',
+    en: 'We stand\nin the midst of an era\nof turbulence and transformation.',
+    ja: '私たちは\n激動と変革の時代の\n真っ只中にいます。',
+    zh: '我们正处于\n变革与动荡时代的\n中心。',
+  },
   history: {
     ko: '연혁',
     en: 'History',
@@ -28,10 +34,10 @@ export const translations: TranslationDictionary = {
     zh: '历史',
   },
   activities: {
-    ko: '활동',
-    en: 'Activities',
-    ja: '活動',
-    zh: '活动',
+    ko: '프로젝트',
+    en: 'Projects',
+    ja: 'プロジェクト',
+    zh: '项目',
   },
   name: {
     ko: '정민기',
@@ -111,6 +117,12 @@ export const translations: TranslationDictionary = {
     ja: 'お問い合わせ',
     zh: '联系',
   },
+  smartOptions: {
+    ko: '스마트 옵션',
+    en: 'Smart Options',
+    ja: 'スマートオプション',
+    zh: '智能选项',
+  },
   socialMedia: {
     ko: 'SNS',
     en: 'Social Media',
@@ -189,16 +201,16 @@ export const translations: TranslationDictionary = {
     ja: '電話',
     zh: '电话',
   },
-  oneOnOneInquiry: {
-    ko: '일대일 문의',
-    en: 'One-on-One Inquiry',
-    ja: '1対1お問い合わせ',
-    zh: '一对一咨询',
+  greetingVideo: {
+    ko: '인사 영상',
+    en: 'Greeting Video',
+    ja: '挨拶動画',
+    zh: '问候视频',
   },
   innoCardInquiry: {
     ko: 'InnoCard\n문의',
     en: 'InnoCard\nInquiry',
-    ja: 'InnoCard\n問い合わせ',
+    ja: 'InnoCard\nお問い合わせ',
     zh: 'InnoCard\n咨询',
   },
   contactOptions: {
@@ -206,6 +218,90 @@ export const translations: TranslationDictionary = {
     en: 'Get in Touch',
     ja: 'お問い合わせ',
     zh: '联系方式',
+  },
+  greetingTitle: {
+    ko: '희미해지는 것이 아닌,\n더 깊이 새겨지는\n당신의 존재',
+    en: 'Not fading away,\nYour presence\nDeepens over time',
+    ja: '消えゆくのではなく、\nより深く刻まれゆく\nあなたの存在',
+    zh: '不是渐渐褪色，\n而是愈发深刻地\n铭记你的存在',
+  },
+  greetingDescription: {
+    ko: '인간의 존엄이 위협받는 AI 시대에도,\n당신의 이야기는 결코 흐려지지 않습니다.\n\nInnoCard는 당신의 가치를 더 선명하고,\n더 오래도록 기억하게 만듭니다.',
+    en: 'Even in the AI era where human dignity is threatened,\nyour story will never fade.\n\nInnoCard makes your value clearer\nand more memorable for longer.',
+    ja: '人間の尊厳が脅かされるAI時代でも、\nあなたの物語は決して薄れることはありません。\n\nInnoCardで、あなたの価値を\nより鮮明に、より永く心に刻みます。',
+    zh: '即使在人类尊严受到威胁的AI时代，\n你的故事也永远不会褪色。\n\nInnoCard让你的价值\n更清晰，更持久地铭记于心。',
+  },
+  chatInputPlaceholder: {
+    ko: '메시지를 입력하세요...',
+    en: 'Type your message...',
+    ja: 'メッセージを入力してください...',
+    zh: '请输入消息...',
+  },
+  cloneTitle: {
+    ko: '의 클론',
+    en: "'s Clone",
+    ja: 'のクローン',
+    zh: '的克隆',
+  },
+  formName: {
+    ko: '이름',
+    en: 'Name',
+    ja: '名前',
+    zh: '姓名',
+  },
+  formNamePlaceholder: {
+    ko: '이름을 입력하세요',
+    en: 'Enter your name',
+    ja: '名前を入力してください',
+    zh: '请输入姓名',
+  },
+  formBirthdate: {
+    ko: '생년월일',
+    en: 'Date of Birth',
+    ja: '生年月日',
+    zh: '出生日期',
+  },
+  formBirthdatePlaceholder: {
+    ko: 'YYYY-MM-DD',
+    en: 'YYYY-MM-DD',
+    ja: 'YYYY-MM-DD',
+    zh: 'YYYY-MM-DD',
+  },
+  formPhone: {
+    ko: '전화번호',
+    en: 'Phone Number',
+    ja: '電話番号',
+    zh: '电话号码',
+  },
+  formPhonePlaceholder: {
+    ko: '전화번호를 입력하세요',
+    en: 'Enter your phone number',
+    ja: '電話番号を入力してください',
+    zh: '请输入电话号码',
+  },
+  formInquiry: {
+    ko: '문의 내용',
+    en: 'Inquiry Details',
+    ja: 'お問い合わせ内容',
+    zh: '咨询内容',
+  },
+  formInquiryPlaceholder: {
+    ko: '예) 제작 문의',
+    en: 'e.g., Production inquiry',
+    ja: '例）制作に関するお問い合わせ',
+    zh: '例如：制作咨询',
+  },
+  formSubmit: {
+    ko: '제출',
+    en: 'Submit',
+    ja: '送信',
+    zh: '提交',
+  },
+  back: {
+    ko: '뒤로',
+    en: 'Back',
+    ja: '戻る',
+    zh: '返回',
   },
 };
 
