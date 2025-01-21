@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react'
 import { ArrowLeft, Moon, Sun, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useLanguage } from '../hooks/useLanguage'
 import { translate } from '../utils/translations'
 import ChatInput, { Message } from '../components/ChatBot/ChatInput'
@@ -16,7 +15,6 @@ export default function ChatPage() {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { language } = useLanguage()
-  const router = useRouter()
 
   useEffect(() => {
     const savedMessages = localStorage.getItem('chatMessages')

@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Language, translate } from '../utils/translations'
-import { Button } from '@/components/ui/button'
 import SophisticatedButton from './SophisticatedButton'
 
 interface MyValuesProps {

@@ -30,7 +30,13 @@ export const metadata: Metadata = {
       height: 630,
       alt: 'InnoCard'
     }]
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'INNOCURVE',
+    description: 'INNOCURVE - AI 기반 디지털 혁신 기업',
+    images: ['/images/og-image.png'],
+  },
 };
 
 export default function RootLayout({

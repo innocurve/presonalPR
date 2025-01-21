@@ -5,7 +5,7 @@ import Image from 'next/image';
 import ChatMessage from './ChatMessage';
 import ChatInput, { Message } from './ChatInput';
 import ReservationForm from './ReservationForm';
-import { translate, Language } from '@/app/utils/translations';
+import { translate } from '@/app/utils/translations';
 import { useLanguage } from '@/app/hooks/useLanguage';
 
 interface ChatBotProps {

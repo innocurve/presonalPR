@@ -4,13 +4,6 @@ import { Card } from "@/components/ui/card"
 import { Language, translate } from '../utils/translations'
 import { useRouter } from 'next/navigation'
 
-interface ContactOptionProps {
-  key: string
-  title: string
-  icon: JSX.Element
-  onClick: () => void
-}
-
 interface ContactOptionsProps {
   language: Language
   onOpenChatBot?: () => void
@@ -21,7 +14,7 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({ language, onOpenChatBot
 
   const handleOptionClick = (key: string) => {
     if (key === 'aiClone') {
-      router.push('/chat')
+      onOpenChatBot?.()
     } else if (key === 'greetingVideo') {
       router.push('/greeting')
     } else if (key === 'phone') {

@@ -132,7 +132,7 @@ export async function POST(request: Request) {
           if (parsedAnswer.ko) {
             answer = parsedAnswer.ko;
           }
-        } catch (e) {
+        } catch {
           // JSON 파싱 실패시 원본 답변 사용
         }
 

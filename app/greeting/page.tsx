@@ -1,18 +1,14 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft } from 'lucide-react'
 import { translate } from '../utils/translations'
 import { useLanguage } from '../hooks/useLanguage'
 import Navigation from '../components/Navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 
 export default function GreetingVideo() {
-  const router = useRouter()
   const { language } = useLanguage()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
