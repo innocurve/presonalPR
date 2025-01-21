@@ -303,6 +303,12 @@ export const translations: TranslationDictionary = {
     ja: '戻る',
     zh: '返回',
   },
+  initialGreeting: {
+    ko: '안녕하세요! 저는 정민기입니다. 무엇을 도와드릴까요?',
+    en: 'Hello! I am Minki Jeong. How can I help you?',
+    ja: 'こんにちは！鄭民基と申します。何かお手伝いできることはありますか？',
+    zh: '你好！我是郑民基。我能为您做些什么？'
+  },
 };
 
 export function translate(key: TranslationKey, lang: Language): string {

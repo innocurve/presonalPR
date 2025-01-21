@@ -25,16 +25,16 @@ export default function ChatPage() {
       } else {
         setMessages([{
           role: 'assistant',
-          content: '안녕하세요! 저는 정민기입니다. 무엇을 도와드릴까요?'
+          content: translate('initialGreeting', language)
         }])
       }
     } else {
       setMessages([{
         role: 'assistant',
-        content: '안녕하세요! 저는 정민기입니다. 무엇을 도와드릴까요?'
+        content: translate('initialGreeting', language)
       }])
     }
-  }, [])
+  }, [language])
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -91,7 +91,7 @@ export default function ChatPage() {
   const clearMessages = () => {
     setMessages([{
       role: 'assistant',
-      content: '안녕하세요! 저는 정민기입니다. 무엇을 도와드릴까요?'
+      content: translate('initialGreeting', language)
     }])
     localStorage.removeItem('chatMessages')
   }

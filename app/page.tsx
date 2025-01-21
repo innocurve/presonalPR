@@ -15,11 +15,9 @@ import AutoSlider from './components/AutoSlider'
 import { useLanguage } from './hooks/useLanguage'
 import { translate } from './utils/translations'
 import ContactOptions from './components/ContactOptions'
-import ChatBot from './components/ChatBot/ChatBot'
 
 export default function Home() {
 const [isMenuOpen, setIsMenuOpen] = useState(false)
-const [isChatBotOpen, setIsChatBotOpen] = useState(false);
 const { language } = useLanguage();
 const [posts, setPosts] = useState([
   { 
@@ -204,7 +202,6 @@ return (
       )}
     </AnimatePresence>
     <main className="w-full max-w-4xl mx-auto p-5 pt-24 flex-grow overflow-x-hidden">
-      <ChatBot isOpen={isChatBotOpen} onOpenChange={setIsChatBotOpen} />
       <div className="w-full overflow-x-hidden">
         <FadeInSection>
           <section id="profile" className="mb-8 bg-white rounded-xl p-6 sm:p-10 shadow-lg overflow-hidden relative">
@@ -244,7 +241,7 @@ return (
       <div className="w-full overflow-x-hidden">
         <FadeInSection>
           <section id="smart-options" className="mb-8">
-            <ContactOptions language={language} onOpenChatBot={() => setIsChatBotOpen(true)} />
+            <ContactOptions language={language} />
           </section>
         </FadeInSection>
       </div>

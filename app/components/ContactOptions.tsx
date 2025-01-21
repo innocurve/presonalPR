@@ -14,7 +14,7 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({ language, onOpenChatBot
 
   const handleOptionClick = (key: string) => {
     if (key === 'aiClone') {
-      onOpenChatBot?.()
+      router.push('/chat')
     } else if (key === 'greetingVideo') {
       router.push('/greeting')
     } else if (key === 'phone') {
