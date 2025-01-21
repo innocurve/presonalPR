@@ -6,10 +6,9 @@ import { useRouter } from 'next/navigation'
 
 interface ContactOptionsProps {
   language: Language
-  onOpenChatBot?: () => void
 }
 
-const ContactOptions: React.FC<ContactOptionsProps> = ({ language, onOpenChatBot }) => {
+const ContactOptions: React.FC<ContactOptionsProps> = ({ language }) => {
   const router = useRouter()
 
   const handleOptionClick = (key: string) => {
