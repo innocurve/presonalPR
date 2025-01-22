@@ -1,26 +1,24 @@
 'use client'
 
 import Image from 'next/image'
-import { Card } from "@/components/ui/card"
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
+import LanguageToggle from './components/LanguageToggle'
+import { useLanguage } from './hooks/useLanguage'
+import { translate } from './utils/translations'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 import MyValues from './components/MyValues'
 import History from './components/Career'
 import FadeInSection from './components/FadeInSection'
 import { useState, useEffect } from 'react';
 import { Menu, X, Mail, Phone } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion';
-import LanguageToggle from './components/LanguageToggle'
-import AutoSlider from './components/AutoSlider'
-import { useLanguage } from './hooks/useLanguage'
-import { translate } from './utils/translations'
 import ContactOptions from './components/ContactOptions'
 import type { PostData } from './types/post'
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 export default function Home() {
 const [isMenuOpen, setIsMenuOpen] = useState(false)
