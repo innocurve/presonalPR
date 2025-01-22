@@ -10,6 +10,13 @@ import ChatInput, { Message } from '../components/ChatBot/ChatInput'
 import ChatMessage from '../components/ChatBot/ChatMessage'
 import Navigation from '../components/Navigation'
 
+const initialMessages = {
+  ko: "안녕하세요! 저는 정민기's Clone입니다. 무엇을 도와드릴까요?",
+  en: "Hello! I'm Minki Jeong's Clone. How can I help you?",
+  ja: "こんにちは！鄭玟基のクローンです。どのようにお手伝いできますか？",
+  zh: "你好！我是郑玟基的克隆。我能为您做些什么？"
+};
+
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -25,13 +32,13 @@ export default function ChatPage() {
       } else {
         setMessages([{
           role: 'assistant',
-          content: translate('initialGreeting', language)
+          content: initialMessages[language as keyof typeof initialMessages] || initialMessages.ko
         }])
       }
     } else {
       setMessages([{
         role: 'assistant',
-        content: translate('initialGreeting', language)
+        content: initialMessages[language as keyof typeof initialMessages] || initialMessages.ko
       }])
     }
   }, [language])
@@ -62,12 +69,13 @@ export default function ChatPage() {
         },
         body: JSON.stringify({ 
           message,
-          language
+          language,
+          previousMessages: messages
         })
       });
 
       if (!response.ok) {
-        throw new Error('API 응답이 실패했습니다.');
+        throw new Error(translate('apiError', language));
       }
 
       const data = await response.json();
@@ -97,7 +105,7 @@ export default function ChatPage() {
   const clearMessages = () => {
     setMessages([{
       role: 'assistant',
-      content: translate('initialGreeting', language)
+      content: initialMessages[language as keyof typeof initialMessages] || initialMessages.ko
     }])
     localStorage.removeItem('chatMessages')
   }
