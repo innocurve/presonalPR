@@ -17,7 +17,7 @@ import { translate } from './utils/translations'
 import ContactOptions from './components/ContactOptions'
 import type { PostData } from './types/post'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -333,76 +333,53 @@ return (
               <h2 className="text-3xl font-bold mb-8 text-center">
                 {translate('community', language)}
               </h2>
-              
-              {/* 데스크톱 뷰 */}
-              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {posts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300"
-                    onClick={() => handlePostClick(post.id)}
-                  >
-                    <div className="relative h-48">
-                      <Image
-                        src={post.image}
-                        alt={post.title[language]}
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold mb-2">{post.title[language]}</h3>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                        {post.description[language]}
-                      </p>
-                      <div className="flex justify-between items-center text-sm text-gray-500">
-                        <span>{post.date}</span>
-                        <span>{translate('views', language)}: {post.hit || 0}</span>
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={30}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                loop={true}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 2,
+                  },
+                  1024: {
+                    slidesPerView: 3,
+                  },
+                }}
+                className="mySwiper"
+              >
+                {posts.map((post, index) => (
+                  <SwiperSlide key={post.id}>
+                    <div
+                      onClick={() => handlePostClick(post.id)}
+                      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-105"
+                    >
+                      <div className="relative h-48">
+                        <Image
+                          src={post.image}
+                          alt={post.title[language]}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-xl font-semibold mb-2">{post.title[language]}</h3>
+                        <p className="text-gray-600 mb-2">{post.description[language]}</p>
+                        <div className="flex justify-between items-center text-sm text-gray-500">
+                          <span>{post.date}</span>
+                          <span>{translate('views', language)}: {post.hit || 0}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </SwiperSlide>
                 ))}
-              </div>
-
-              {/* 모바일 뷰 - Swiper 추가 */}
-              <div className="md:hidden">
-                <Swiper
-                  modules={[Navigation, Pagination]}
-                  spaceBetween={20}
-                  slidesPerView={1}
-                  navigation
-                  pagination={{ clickable: true }}
-                  className="mySwiper"
-                >
-                  {posts.map((post) => (
-                    <SwiperSlide key={post.id}>
-                      <div
-                        className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
-                        onClick={() => handlePostClick(post.id)}
-                      >
-                        <div className="relative h-48">
-                          <Image
-                            src={post.image}
-                            alt={post.title[language]}
-                            layout="fill"
-                            objectFit="cover"
-                          />
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-bold mb-2">{post.title[language]}</h3>
-                          <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                            {post.description[language]}
-                          </p>
-                          <div className="flex justify-between items-center text-sm text-gray-500">
-                            <span>{post.date}</span>
-                            <span>{translate('views', language)}: {post.hit || 0}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
+              </Swiper>
             </div>
           </section>
         </FadeInSection>

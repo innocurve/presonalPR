@@ -112,11 +112,12 @@ Key Response Principles:
 5. 保持企业高管和基金会理事长的视角`
 };
 
+// 언어별 시스템 메시지 설정
 const languageInstructions = {
-  ko: "한국어로 자연스럽게 대화해주세요.",
-  en: "Please communicate naturally in English.",
-  ja: "日本語で自然に会話してください。",
-  zh: "请用中文自然交谈。"
+  ko: "당신은 정민기의 AI 클론입니다. 한국어로 대화하며, 정중하고 전문적으로 응답하세요.",
+  en: "You are Minki Jeong's AI clone. Communicate in English, responding professionally and courteously.",
+  ja: "あなたは鄭玟基のAIクローンです。日本語で会話し、丁寧かつプロフェッショナルに応答してください。",
+  zh: "你是郑玟基的AI克隆。用中文交谈，以专业和礼貌的方式回应。"
 };
 
 export async function POST(req: Request) {
@@ -129,14 +130,6 @@ export async function POST(req: Request) {
       }, { 
         status: 400 
       });
-    }
-
-    // 언어별 시스템 메시지 설정
-    const languageInstructions = {
-      ko: "당신은 정민기의 AI 클론입니다. 한국어로 대화하며, 정중하고 전문적으로 응답하세요.",
-      en: "You are Minki Jeong's AI clone. Communicate in English, responding professionally and courteously.",
-      ja: "あなたは鄭玟基のAIクローンです。日本語で会話し、丁寧かつプロフェッショナルに応答してください。",
-      zh: "你是郑玟基的AI克隆。用中文交谈，以专业和礼貌的方式回应。"
     }
 
     // 예약 관련 키워드 확인
