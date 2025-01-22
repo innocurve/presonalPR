@@ -354,7 +354,7 @@ return (
                 }}
                 className="mySwiper"
               >
-                {posts.map((post, index) => (
+                {posts.map((post) => (
                   <SwiperSlide key={post.id}>
                     <div
                       onClick={() => handlePostClick(post.id)}

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { createClient } from '@supabase/supabase-js';
-import { Language } from '@/app/utils/translations';
 
 if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
   throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL');
@@ -217,11 +216,11 @@ export async function POST(req: Request) {
 
     // OpenAI 사용
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content: systemPrompts[language as keyof typeof systemPrompts] || systemPrompts.ko
+          content: `${systemPrompts[language as keyof typeof systemPrompts] || systemPrompts.ko}\n${languageInstructions[language as keyof typeof languageInstructions] || languageInstructions.ko}`
         },
         { role: "user", content: message }
       ],
