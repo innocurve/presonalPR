@@ -9,10 +9,6 @@ import { translate } from '../../utils/translations'
 import { useLanguage } from '@/app/hooks/useLanguage'
 import type { PostData } from '@/app/types/post'
 
-interface PostParams {
-  id: string;
-}
-
 export default function PostDetail() {
   const params = useParams()
   const router = useRouter()
