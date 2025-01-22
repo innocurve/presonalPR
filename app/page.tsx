@@ -16,6 +16,11 @@ import { useLanguage } from './hooks/useLanguage'
 import { translate } from './utils/translations'
 import ContactOptions from './components/ContactOptions'
 import type { PostData } from './types/post'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export default function Home() {
 const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -323,54 +328,81 @@ return (
       </div>
       <div className="w-full overflow-x-hidden">
         <FadeInSection>
-          <section id="community" className="my-8">
-            <div className="md:hidden h-[400px]">
-              <AutoSlider interval={5000}>
+          <section id="community" className="py-16 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold mb-8 text-center">
+                {translate('community', language)}
+              </h2>
+              
+              {/* 데스크톱 뷰 */}
+              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts.map((post) => (
-                  <Card key={post.id} className="w-full h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300" onClick={() => handlePostClick(post.id)}>
-                    <Image
-                      src={post.image}
-                      alt={post.title[language]}
-                      width={300}
-                      height={200}
-                      className="w-full h-48 object-cover w-auto h-auto"
-                    />
+                  <div
+                    key={post.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-300"
+                    onClick={() => handlePostClick(post.id)}
+                  >
+                    <div className="relative h-48">
+                      <Image
+                        src={post.image}
+                        alt={post.title[language]}
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </div>
                     <div className="p-4">
-                      <h3 className="font-bold text-lg mb-2 line-clamp-2">{post.title[language]}</h3>
-                      <p className="text-sm text-gray-600 mb-2">{post.date}</p>
-                      <p className="text-sm text-gray-500 mb-4 line-clamp-3">{post.description[language]}</p>
-                      <div className="flex items-end">
-                        <span className="text-sm text-gray-500">{translate('views', language)}: {post.hit}</span>
+                      <h3 className="font-bold mb-2">{post.title[language]}</h3>
+                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                        {post.description[language]}
+                      </p>
+                      <div className="flex justify-between items-center text-sm text-gray-500">
+                        <span>{post.date}</span>
+                        <span>{translate('views', language)}: {post.hit || 0}</span>
                       </div>
                     </div>
-                  </Card>
-                ))}
-              </AutoSlider>
-            </div>
-            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <Card 
-                  key={post.id} 
-                  className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer transform hover:-translate-y-1 hover:scale-105" 
-                  onClick={() => handlePostClick(post.id)}
-                >
-                  <Image
-                    src={post.image}
-                    alt={post.title[language]}
-                    width={300}
-                    height={200}
-                    className="w-full h-48 object-cover w-auto h-auto"
-                  />
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg mb-2 line-clamp-2">{post.title[language]}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{post.date}</p>
-                    <p className="text-sm text-gray-500 mb-4 line-clamp-3">{post.description[language]}</p>
-                    <div className="flex items-end">
-                      <span className="text-sm text-gray-500">{translate('views', language)}: {post.hit}</span>
-                    </div>
                   </div>
-                </Card>
-              ))}
+                ))}
+              </div>
+
+              {/* 모바일 뷰 - Swiper 추가 */}
+              <div className="md:hidden">
+                <Swiper
+                  modules={[Navigation, Pagination]}
+                  spaceBetween={20}
+                  slidesPerView={1}
+                  navigation
+                  pagination={{ clickable: true }}
+                  className="mySwiper"
+                >
+                  {posts.map((post) => (
+                    <SwiperSlide key={post.id}>
+                      <div
+                        className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+                        onClick={() => handlePostClick(post.id)}
+                      >
+                        <div className="relative h-48">
+                          <Image
+                            src={post.image}
+                            alt={post.title[language]}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <h3 className="font-bold mb-2">{post.title[language]}</h3>
+                          <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                            {post.description[language]}
+                          </p>
+                          <div className="flex justify-between items-center text-sm text-gray-500">
+                            <span>{post.date}</span>
+                            <span>{translate('views', language)}: {post.hit || 0}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
             </div>
           </section>
         </FadeInSection>
