@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { Bot, Video, Phone, CalendarDays, CreditCard } from 'lucide-react';
+import { Bot, Phone, Video, CreditCard } from 'lucide-react';
 import { Language, translate } from '../utils/translations';
 
 interface ContactProps {

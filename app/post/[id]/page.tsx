@@ -33,28 +33,42 @@ export default function PostDetail() {
   }, [params.id])
 
   const incrementViewCount = (post: PostData) => {
-    const now = new Date().getTime()
-    const viewHistory = JSON.parse(localStorage.getItem('postViewHistory') || '{}')
-    const lastViewTime = viewHistory[post.id] || 0
-
-    // 24시간(86400000 밀리초)이 지났는지 확인
-    if (now - lastViewTime > 86400000) {
-      // 조회수 증가
-      const updatedPost = { ...post, hit: (post.hit || 0) + 1 }
+    try {
+      const now = new Date().getTime()
+      const viewHistory = JSON.parse(localStorage.getItem('postViewHistory') || '{}')
+      const lastViewTime = viewHistory[post.id] || 0
       
-      // localStorage의 posts 업데이트
-      const posts = JSON.parse(localStorage.getItem('posts') || '[]')
-      const updatedPosts = posts.map((p: PostData) => 
-        p.id === post.id ? updatedPost : p
-      )
-      
-      localStorage.setItem('posts', JSON.stringify(updatedPosts))
-      localStorage.setItem('postViewHistory', JSON.stringify({
-        ...viewHistory,
-        [post.id]: now
-      }))
-      
-      setPost(updatedPost)
+      // 24시간(86400000 밀리초)이 지났는지 확인
+      if (now - lastViewTime > 86400000) {
+        console.log('Incrementing view count for post:', post.id)
+        
+        // 조회수 증가
+        const updatedPost = { 
+          ...post, 
+          hit: (typeof post.hit === 'number' ? post.hit : 0) + 1 
+        }
+        
+        // localStorage의 posts 업데이트
+        const posts = JSON.parse(localStorage.getItem('posts') || '[]')
+        const updatedPosts = posts.map((p: PostData) => 
+          p.id === post.id ? updatedPost : p
+        )
+        
+        // localStorage 업데이트
+        localStorage.setItem('posts', JSON.stringify(updatedPosts))
+        localStorage.setItem('postViewHistory', JSON.stringify({
+          ...viewHistory,
+          [post.id]: now
+        }))
+        
+        // 상태 업데이트
+        setPost(updatedPost)
+        console.log('View count updated successfully')
+      } else {
+        console.log('View count not incremented - within 24h period')
+      }
+    } catch (error) {
+      console.error('Error updating view count:', error)
     }
   }
 

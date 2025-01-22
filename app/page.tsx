@@ -115,16 +115,72 @@ const [posts, setPosts] = useState<PostData[]>([
 
 const router = useRouter();
 
+// 초기 데이터 로드
 useEffect(() => {
-  // localStorage에서 posts 데이터 가져오기
-  const storedPosts = localStorage.getItem('posts');
-  if (storedPosts) {
-    setPosts(JSON.parse(storedPosts));
-  } else {
-    // localStorage에 초기 posts 데이터 저장
-    localStorage.setItem('posts', JSON.stringify(posts));
-  }
+  const loadInitialData = () => {
+    const storedPosts = localStorage.getItem('posts');
+    if (!storedPosts) {
+      // 초기 데이터 설정
+      const initialPosts = [
+        {
+          id: 1,
+          title: {
+            ko: '(사)대한청년을세계로 미래전략포럼 개최',
+            en: 'Future Strategy Forum held by Korean Youth to the World Association',
+            ja: '(社)大韓青年を世界へ 未来戦略フォーラム開催',
+            zh: '(社)韩国青年走向世界协会举办未来战略论坛',
+          },
+          date: '2024.12.3',
+          hit: 0,
+          image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%EB%AF%B8%EB%9E%98%EC%A0%84%EB%9E%B5%ED%8F%AC%EB%9F%BC.jpg-lobjD33dLn9HHvFaqwYC57KhFIHDJb.jpeg',
+          description: {
+            ko: '기술혁신의 시대속에서 청년들의 미래를 위한 전략을 논의하는 포럼을 개최합니다.',
+            en: 'Hosting a forum to discuss strategies for the future of youth in the era of technological innovation.',
+            ja: '技術革新の時代における若者の未来のための戦略を議論するフォーラムを開催します。',
+            zh: '举办论坛，讨论技术创新时代青年未来的战略。',
+          }
+        },
+        // ... 다른 포스트들 ...
+      ];
+      localStorage.setItem('posts', JSON.stringify(initialPosts));
+      setPosts(initialPosts);
+    } else {
+      setPosts(JSON.parse(storedPosts));
+    }
+  };
+
+  loadInitialData();
 }, []); // 컴포넌트 마운트 시 한 번만 실행
+
+// localStorage 데이터 변경 감지 및 상태 업데이트
+useEffect(() => {
+  const handleStorageChange = () => {
+    const storedPosts = localStorage.getItem('posts');
+    if (storedPosts) {
+      setPosts(JSON.parse(storedPosts));
+    }
+  };
+
+  window.addEventListener('storage', handleStorageChange);
+  return () => {
+    window.removeEventListener('storage', handleStorageChange);
+  };
+}, []); // 컴포넌트 마운트 시 이벤트 리스너 등록
+
+// 페이지 포커스 시 데이터 새로고침
+useEffect(() => {
+  const handleFocus = () => {
+    const storedPosts = localStorage.getItem('posts');
+    if (storedPosts) {
+      setPosts(JSON.parse(storedPosts));
+    }
+  };
+
+  window.addEventListener('focus', handleFocus);
+  return () => {
+    window.removeEventListener('focus', handleFocus);
+  };
+}, []); // 컴포넌트 마운트 시 이벤트 리스너 등록
 
 const handlePostClick = (postId: number) => {
   router.push(`/post/${postId}`);
@@ -310,7 +366,7 @@ return (
                     <p className="text-sm text-gray-600 mb-2">{post.date}</p>
                     <p className="text-sm text-gray-500 mb-4 line-clamp-3">{post.description[language]}</p>
                     <div className="flex items-end">
-                      <span className="text-sm text-gray-500">{translate('views', language)}: {post.hit || 0}</span>
+                      <span className="text-sm text-gray-500">{translate('views', language)}: {post.hit}</span>
                     </div>
                   </div>
                 </Card>

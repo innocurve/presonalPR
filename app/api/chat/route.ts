@@ -162,6 +162,10 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system",
+          content: systemPrompt
+        },
+        {
+          role: "system",
           content: languageInstructions[language as Language] || languageInstructions.ko
         },
         { role: "user", content: message }
