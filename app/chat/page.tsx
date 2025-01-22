@@ -11,7 +11,7 @@ import ChatMessage from '../components/ChatBot/ChatMessage'
 import Navigation from '../components/Navigation'
 
 const initialMessages = {
-  ko: "안녕하세요! 저는 정민기's Clone입니다. 무엇을 도와드릴까요?",
+  ko: "안녕하세요! 저는 홍길동's Clone입니다. 무엇을 도와드릴까요?",
   en: "Hello! I'm Minki Jeong's Clone. How can I help you?",
   ja: "こんにちは！鄭玟基のクローンです。どのようにお手伝いできますか？",
   zh: "你好！我是郑玟基的克隆。我能为您做些什么？"
@@ -150,13 +150,14 @@ export default function ChatPage() {
           <div className="flex-1 flex flex-col items-center">
             <div className="w-16 h-16 relative rounded-full overflow-hidden mb-2">
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-JTSehNl2EKBQk7qe2rhkhmUTpPGYrW.png"
+                src="/humanoid001.png"
                 alt={translate('name', language)}
                 fill
                 className="object-cover"
               />
             </div>
-            <span className="text-lg font-medium">{translate('name', language)}{translate('cloneTitle', language)}</span>
+         
+            <span className="text-lg font-medium">홍길동's Clone</span>
           </div>
           <div className="flex items-center gap-2">
             <button
