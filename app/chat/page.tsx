@@ -156,8 +156,8 @@ export default function ChatPage() {
                 className="object-cover"
               />
             </div>
-         
-            <span className="text-lg font-medium">홍길동's Clone</span>
+          
+            <span className="text-lg font-medium">홍길동&apos;s Clone</span>
           </div>
           <div className="flex items-center gap-2">
             <button
