@@ -20,8 +20,15 @@ export default function PostDetail() {
       const posts = JSON.parse(localStorage.getItem('posts') || '[]')
       const foundPost = posts.find((p: PostData) => p.id === Number(params.id))
       if (foundPost) {
-        setPost(foundPost)
-        incrementViewCount(foundPost)
+        // hit가 undefined일 경우 0으로 초기화
+        setPost({
+          ...foundPost,
+          hit: foundPost.hit || 0
+        })
+        incrementViewCount({
+          ...foundPost,
+          hit: foundPost.hit || 0
+        })
       }
     }
 
@@ -38,10 +45,10 @@ export default function PostDetail() {
       if (now - lastViewTime > 86400000) {
         console.log('Incrementing view count for post:', post.id)
         
-        // 조회수 증가
+        // 조회수 증가 (hit가 undefined일 경우 0으로 처리)
         const updatedPost = { 
           ...post, 
-          hit: (typeof post.hit === 'number' ? post.hit : 0) + 1 
+          hit: (post.hit || 0) + 1 
         }
         
         // localStorage의 posts 업데이트
@@ -88,7 +95,7 @@ export default function PostDetail() {
           />
           <div className="flex justify-between items-center mb-6">
             <p className="text-gray-600">{post.date}</p>
-            <p className="font-mono text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-600 hover:from-blue-600 hover:to-cyan-500 transition-all duration-300">
+            <p className="text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-600 hover:from-blue-600 hover:to-cyan-500 transition-all duration-300">
               {translate('views', language)}: {post.hit || 0}
             </p>
           </div>
