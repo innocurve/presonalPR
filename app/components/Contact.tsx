@@ -1,38 +1,51 @@
+'use client'
+
 import Link from 'next/link';
-import Image from 'next/image';
-import { useContext } from 'react';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { Bot, Video, Phone, CalendarDays, CreditCard } from 'lucide-react';
+import { Language, translate } from '../utils/translations';
 
-export default function Contact() {
-  const context = useContext(LanguageContext);
-  if (!context) return null;
-  const { language } = context;
+interface ContactProps {
+  language: Language;
+}
 
+export default function Contact({ language }: ContactProps) {
   return (
-    <div className="grid grid-cols-2 gap-4 md:gap-6 mt-8">
-      <Link href="#" className="bg-white rounded-lg shadow-md p-4 md:p-6 flex flex-col items-center justify-center min-h-[200px] relative">
-        <h3 className="text-lg md:text-xl font-bold mb-2 text-center">{language === 'ko' ? 'AI 클론' : 'AI Clone'}</h3>
-        <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-          <Image src="/icons/ai-clone.svg" alt="AI Clone" width={48} height={48} className="w-full h-full object-contain" />
-        </div>
+    <div className="flex flex-col gap-4 ">
+      <Link
+        href="/ai-clone"
+        className="flex items-center gap-2 group"
+      >
+        <Bot className="w-6 h-6 text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text" />
+        <span className="font-mono tracking-tight text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text">
+          {translate('aiClone', language)}
+        </span>
       </Link>
-      <Link href="#" className="bg-white rounded-lg shadow-md p-4 md:p-6 flex flex-col items-center justify-center min-h-[200px] relative">
-        <h3 className="text-lg md:text-xl font-bold mb-2 text-center">{language === 'ko' ? '전화' : 'Phone'}</h3>
-        <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-          <Image src="/icons/phone.svg" alt="Phone" width={48} height={48} className="w-full h-full object-contain" />
-        </div>
+      <Link
+        href="/greeting-video"
+        className="flex items-center gap-2 group"
+      >
+        <Video className="w-6 h-6 text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text" />
+        <span className="font-mono tracking-tight text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text">
+          {translate('greetingVideo', language)}
+        </span>
       </Link>
-      <Link href="#" className="bg-white rounded-lg shadow-md p-4 md:p-6 flex flex-col items-center justify-center min-h-[200px] relative">
-        <h3 className="text-lg md:text-xl font-bold mb-2 text-center">{language === 'ko' ? '일대일 문의' : 'One-on-One Inquiry'}</h3>
-        <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-          <Image src="/icons/chat.svg" alt="Chat" width={48} height={48} className="w-full h-full object-contain" />
-        </div>
+      <Link
+        href="/phone"
+        className="flex items-center gap-2 group"
+      >
+        <Phone className="w-6 h-6 text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text" />
+        <span className="font-mono tracking-tight text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text">
+          {translate('phone', language)}
+        </span>
       </Link>
-      <Link href="#" className="bg-white rounded-lg shadow-md p-4 md:p-6 flex flex-col items-center justify-center min-h-[200px] relative">
-        <h3 className="text-lg md:text-xl font-bold mb-2 text-center">{language === 'ko' ? 'InnoCard 문의' : 'InnoCard Inquiry'}</h3>
-        <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-          <Image src="/icons/pencil.svg" alt="Pencil" width={48} height={48} className="w-full h-full object-contain" />
-        </div>
+      <Link
+        href="/innocard-inquiry"
+        className="flex items-center gap-2 group"
+      >
+        <CreditCard className="w-6 h-6 font-mono text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text" />
+        <span className="font-mono tracking-tight text-transparent bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text whitespace-pre-line">
+          {translate('innoCardInquiry', language)}
+        </span>
       </Link>
     </div>
   );

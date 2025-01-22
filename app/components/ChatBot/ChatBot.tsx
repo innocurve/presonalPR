@@ -82,7 +82,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
         // 저장된 메시지가 없을 때만 초기 메시지 설정
         setMessages([{
           role: 'assistant',
-          content: '안녕하세요! 저는 정민기의 AI 클론입니다. 무엇을 도와드릴까요?',
+          content: "안녕하세요! 저는 정민기's Clone입니다. 무엇을 도와드릴까요?",
           timestamp: Date.now()
         }]);
       }
@@ -90,7 +90,7 @@ const ChatBot = ({ isOpen: externalIsOpen, onOpenChange }: ChatBotProps) => {
       // localStorage에 아무것도 없을 때 초기 메시지 설정
       setMessages([{
         role: 'assistant',
-        content: '안녕하세요! 저는 정민기의 AI 클론입니다. 무엇을 도와드릴까요?',
+        content: "안녕하세요! 저는 정민기's Clone입니다. 무엇을 도와드릴까요?",
         timestamp: Date.now()
       }]);
     }

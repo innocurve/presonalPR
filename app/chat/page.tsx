@@ -60,7 +60,10 @@ export default function ChatPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ 
+          message,
+          language
+        })
       });
 
       if (!response.ok) {
@@ -82,7 +85,10 @@ export default function ChatPage() {
       console.error('Error:', error);
       const errorMessage: Message = {
         role: 'assistant',
-        content: error instanceof Error ? error.message : '죄송합니다. 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+        content: translate(
+          error instanceof Error ? error.message : 'chatError',
+          language
+        )
       }
       setMessages(prev => [...prev, errorMessage])
     }

@@ -21,6 +21,11 @@ module.exports = {
       textColor: {
         foreground: 'hsl(var(--foreground))',
       },
+      fontFamily: {
+        sans: ['var(--font-geist-sans)'],
+        mono: ['var(--font-geist-mono)'],
+        gungsuh: ['Gungsuh', 'Batang', 'serif'],
+      },
     },
   },
   plugins: [],

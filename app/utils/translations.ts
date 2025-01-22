@@ -238,10 +238,10 @@ export const translations: TranslationDictionary = {
     zh: '请输入消息...',
   },
   cloneTitle: {
-    ko: '의 클론',
+    ko: "'s Clone",
     en: "'s Clone",
-    ja: 'のクローン',
-    zh: '的克隆',
+    ja: "'s Clone",
+    zh: "'s Clone"
   },
   formName: {
     ko: '이름',

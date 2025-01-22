@@ -80,11 +80,11 @@ const ContactOptions: React.FC<ContactOptionsProps> = ({ language }) => {
       {options.map((option) => (
         <Card
           key={option.key}
-          className="cursor-pointer hover:shadow-md transition-shadow duration-200 p-6 relative h-48"
+          className="cursor-pointer hover:shadow-md transition-shadow duration-200 p-6 relative h-48 group"
           onClick={() => handleOptionClick(option.key)}
         >
           <div className="absolute top-6 left-4">
-            <h3 className="text-2xl font-semibold text-gray-900">
+            <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-600 group-hover:from-blue-600 group-hover:to-cyan-500 transition-all duration-300">
               {option.title.split('\n').map((line, i) => (
                 <span key={i} className="block">{line}</span>
               ))}

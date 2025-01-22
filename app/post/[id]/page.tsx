@@ -1,86 +1,66 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import Image from 'next/image'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Language, translate } from '../../utils/translations'
+import { translate } from '../../utils/translations'
+import { useLanguage } from '@/app/hooks/useLanguage'
+import type { PostData } from '@/app/types/post'
 
 interface PostParams {
   id: string;
 }
 
-interface PostData {
-  id: number;
-  title: { [key in Language]: string };
-  date: string;
-  views: number;
-  image: string;
-  description: { [key in Language]: string };
-  content?: { [key in Language]: string };
-  gallery?: Array<{
-    id: number;
-    image: string;
-    title: { [key in Language]: string };
-    description: { [key in Language]: string };
-    content: { [key in Language]: string };
-  }>;
-}
-
-export default function Post({ params }: { params: PostParams }) {
+export default function PostDetail() {
+  const params = useParams()
   const router = useRouter()
+  const { language } = useLanguage()
   const [post, setPost] = useState<PostData | null>(null)
-  const [language, setLanguage] = useState<Language>('ko')
-
-  useEffect(() => {
-    const storedLanguage = localStorage.getItem('language');
-    if (storedLanguage) {
-      setLanguage(storedLanguage as Language);
-    }
-
-    const handleLanguageChange = (e: StorageEvent) => {
-      if (e.key === 'language' && e.newValue) {
-        setLanguage(e.newValue as Language);
-      }
-    };
-
-    window.addEventListener('storage', handleLanguageChange);
-    return () => window.removeEventListener('storage', handleLanguageChange);
-  }, []);
 
   useEffect(() => {
     const fetchPost = () => {
-      try {
-        const storedPosts = localStorage.getItem('posts');
-        if (!storedPosts) {
-          throw new Error('Posts not found');
-        }
-        
-        const posts = JSON.parse(storedPosts);
-        const foundPost = posts.find((p: PostData) => p.id === Number(params.id));
-        
-        if (!foundPost) {
-          throw new Error('Post not found');
-        }
-        
-        setPost(foundPost);
-      } catch (error) {
-        console.error('Error fetching post:', error);
-        router.push('/');
+      const posts = JSON.parse(localStorage.getItem('posts') || '[]')
+      const foundPost = posts.find((p: PostData) => p.id === Number(params.id))
+      if (foundPost) {
+        setPost(foundPost)
+        incrementViewCount(foundPost)
       }
-    };
+    }
 
-    fetchPost();
-  }, [params.id, router]);
+    fetchPost()
+  }, [params.id])
+
+  const incrementViewCount = (post: PostData) => {
+    const now = new Date().getTime()
+    const viewHistory = JSON.parse(localStorage.getItem('postViewHistory') || '{}')
+    const lastViewTime = viewHistory[post.id] || 0
+
+    // 24시간(86400000 밀리초)이 지났는지 확인
+    if (now - lastViewTime > 86400000) {
+      // 조회수 증가
+      const updatedPost = { ...post, hit: (post.hit || 0) + 1 }
+      
+      // localStorage의 posts 업데이트
+      const posts = JSON.parse(localStorage.getItem('posts') || '[]')
+      const updatedPosts = posts.map((p: PostData) => 
+        p.id === post.id ? updatedPost : p
+      )
+      
+      localStorage.setItem('posts', JSON.stringify(updatedPosts))
+      localStorage.setItem('postViewHistory', JSON.stringify({
+        ...viewHistory,
+        [post.id]: now
+      }))
+      
+      setPost(updatedPost)
+    }
+  }
 
   if (!post) {
     return <div>Loading...</div>
   }
-
-  const handleGalleryClick = (galleryId: number) => {
-    router.push(`/gallery/${galleryId}`);
-  };
 
   return (
     <div className="max-w-3xl mx-auto p-5 mt-24">
@@ -96,7 +76,12 @@ export default function Post({ params }: { params: PostParams }) {
             height={400} 
             className="w-full h-64 object-cover mb-4 rounded-lg"
           />
-          <p className="text-sm text-gray-500 mb-4">{translate('date', language)}: {post.date} | {translate('views', language)}: {post.views}</p>
+          <div className="flex justify-between items-center mb-6">
+            <p className="text-gray-600">{post.date}</p>
+            <p className="font-mono text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-600 hover:from-blue-600 hover:to-cyan-500 transition-all duration-300">
+              {translate('views', language)}: {post.hit || 0}
+            </p>
+          </div>
           <p className="font-bold mb-2">{translate('summary', language)}</p>
           <p className="mb-4">{post.description[language]}</p>
           
@@ -108,7 +93,7 @@ export default function Post({ params }: { params: PostParams }) {
                   <div 
                     key={item.id} 
                     className="cursor-pointer relative group"
-                    onClick={() => handleGalleryClick(item.id)}
+                    onClick={() => router.push(`/gallery/${item.id}`)}
                   >
                     <Image 
                       src={item.image} 

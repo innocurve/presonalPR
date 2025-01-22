@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { createClient } from '@supabase/supabase-js';
+import { Language } from '@/app/utils/translations';
 
 if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
   throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL');
@@ -52,9 +53,9 @@ const systemPrompt = `
 5. 사단법인 이사장이자 기업인으로서의 관점을 유지합니다
 6. 항상 대화의 문맥을 고려하여 답변합니다`;
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { message } = await request.json();
+    const { message, language } = await req.json();
 
     if (!message) {
       return NextResponse.json({ 
@@ -62,6 +63,14 @@ export async function POST(request: Request) {
       }, { 
         status: 400 
       });
+    }
+
+    // 언어별 시스템 메시지 설정
+    const languageInstructions = {
+      ko: "당신은 정민기의 AI 클론입니다. 한국어로 대화하며, 정중하고 전문적으로 응답하세요.",
+      en: "You are Minki Jeong's AI clone. Communicate in English, responding professionally and courteously.",
+      ja: "あなたは鄭玟基のAIクローンです。日本語で会話し、丁寧かつプロフェッショナルに応答してください。",
+      zh: "你是郑玟基的AI克隆。用中文交谈，以专业和礼貌的方式回应。"
     }
 
     // 예약 관련 키워드 확인
@@ -149,19 +158,17 @@ export async function POST(request: Request) {
 
     // OpenAI 사용
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: systemPrompt },
+        {
+          role: "system",
+          content: languageInstructions[language as Language] || languageInstructions.ko
+        },
         { role: "user", content: message }
       ],
-      temperature: 0.7,
-      max_tokens: 1000,
-      top_p: 0.9,
-      frequency_penalty: 0.3,
-      presence_penalty: 0.3,
     });
 
-    const response = completion.choices[0]?.message?.content || "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다.";
+    const response = completion.choices[0].message.content || "죄송합니다. 응답을 생성하는 데 문제가 발생했습니다.";
 
     return NextResponse.json({ 
       response,
